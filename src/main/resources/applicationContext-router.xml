@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="root" class="org.restlet.ext.spring.SpringRouter">
+		<property name="attachments">
+			<map>
+				<entry key="/games">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="createResource"
+							bean="gamesResource" />
+					</bean>
+				</entry>
+				<entry key="/games/{gameid}">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="createResource"
+							bean="gameResource" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="gamesResource"
+		class="edu.luc.cs.laufer.cs433.numguess.restlet.GamesResource"
+		scope="prototype">
+		<property name="games" ref="games" />
+		<property name="freemarkerConfig" ref="freemarkerConfig" />
+	</bean>
+
+	<bean name="gameResource"
+		class="edu.luc.cs.laufer.cs433.numguess.restlet.GameResource"
+		scope="prototype">
+		<property name="games" ref="games" />
+		<property name="freemarkerConfig" ref="freemarkerConfig" />
+	</bean>
+
+	<bean id="games"
+		class="edu.luc.cs.laufer.cs433.numguess.domain.Games">
+		<property name="sharedData">
+			<bean
+				class="edu.luc.cs.laufer.cs433.numguess.domain.DefaultSharedData" />
+		</property>
+	</bean>
+
+	<bean id="freemarkerConfig"
+		class="freemarker.template.Configuration">
+		<property name="directoryForTemplateLoading"
+			value="src/main/resources/presentation" />
+		<property name="objectWrapper">
+			<bean class="freemarker.template.DefaultObjectWrapper" />
+		</property>
+	</bean>
+
+</beans>
