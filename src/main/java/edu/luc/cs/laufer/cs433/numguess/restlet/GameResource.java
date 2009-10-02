@@ -24,9 +24,9 @@ import freemarker.template.Template;
 
 /**
  * A resource for a single game.
- * 
+ *
  * GET: guess form for this game.
- * 
+ *
  * POST: submit and process a guess (returns representation of game depending on
  * game state).
  */
@@ -37,7 +37,7 @@ public class GameResource extends Resource {
 			final Response response) {
 		super.init(context, request, response);
 		setModifiable(true);
-		getVariants().add(new Variant(MediaType.TEXT_HTML));
+		getVariants().add(new Variant(MediaType.APPLICATION_XHTML_XML));
 		getVariants().add(new Variant(MediaType.APPLICATION_JSON));
 		id = Integer.parseInt((String) getRequest().getAttributes().get(
 				"gameid"));
@@ -52,7 +52,7 @@ public class GameResource extends Resource {
 
 	/**
 	 * Returns the unique ID of this game.
-	 * 
+	 *
 	 * @return the unique ID of this game
 	 */
 	protected int getId() {
@@ -66,7 +66,7 @@ public class GameResource extends Resource {
 
 	/**
 	 * Sets the collection of games that this game belongs to.
-	 * 
+	 *
 	 * @param games
 	 *            the collection of games
 	 */
@@ -81,7 +81,7 @@ public class GameResource extends Resource {
 
 	/**
 	 * Sets the Freemarker configuration for this resource.
-	 * 
+	 *
 	 * @param freemarkerConfig
 	 *            the Freemarker configuration
 	 */
@@ -91,7 +91,7 @@ public class GameResource extends Resource {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.restlet.resource.Resource#represent(org.restlet.resource.Variant)
 	 */
 	@Override
@@ -99,7 +99,7 @@ public class GameResource extends Resource {
 		if (variant == null)
 			return null;
 
-		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
+		if (variant.getMediaType().equals(MediaType.APPLICATION_XHTML_XML)) {
 			try {
 				final Template template = freemarkerConfig
 						.getTemplate("guess.ftl");
@@ -120,7 +120,7 @@ public class GameResource extends Resource {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.restlet.resource.Resource#acceptRepresentation(org.restlet.resource.Representation)
 	 */
 	@Override
@@ -131,7 +131,7 @@ public class GameResource extends Resource {
 		final GuessResult result = games.getGame(getId()).guess(guess);
 		Logger.getRootLogger().info(
 				this + ": form parameters " + form.getQueryString());
-		if (getPreferredVariant().getMediaType().equals(MediaType.TEXT_HTML)) {
+		if (getPreferredVariant().getMediaType().equals(MediaType.APPLICATION_XHTML_XML)) {
 			try {
 				final Template template = freemarkerConfig
 						.getTemplate("result.ftl");

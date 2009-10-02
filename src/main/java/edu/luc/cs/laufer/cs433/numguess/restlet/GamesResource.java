@@ -22,9 +22,9 @@ import freemarker.template.Template;
 
 /**
  * A resource for initiating new games.
- * 
+ *
  * GET: welcome page (with button to start game).
- * 
+ *
  * POST: create and start game (with redirect to representation of the new game).
  */
 public class GamesResource extends Resource {
@@ -36,7 +36,7 @@ public class GamesResource extends Resource {
 
 	/**
 	 * Sets the collection of games that this game belongs to.
-	 * 
+	 *
 	 * @param games
 	 *            the collection of games
 	 */
@@ -51,7 +51,7 @@ public class GamesResource extends Resource {
 
 	/**
 	 * Sets the Freemarker configuration for this resource.
-	 * 
+	 *
 	 * @param freemarkerConfig
 	 *            the Freemarker configuration
 	 */
@@ -67,7 +67,7 @@ public class GamesResource extends Resource {
 			final Response response) {
 		super.init(context, request, response);
 		setModifiable(true);
-		getVariants().add(new Variant(MediaType.TEXT_HTML));
+		getVariants().add(new Variant(MediaType.APPLICATION_XHTML_XML));
 		getVariants().add(new Variant(MediaType.APPLICATION_JSON));
 	}
 
@@ -79,7 +79,7 @@ public class GamesResource extends Resource {
 		if (variant == null)
 			return null;
 
-		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
+		if (variant.getMediaType().equals(MediaType.APPLICATION_XHTML_XML)) {
 			try {
 				final Template template = freemarkerConfig
 						.getTemplate("welcome.ftl");
@@ -103,7 +103,7 @@ public class GamesResource extends Resource {
 		getResponse().setStatus(Status.SUCCESS_CREATED);
 		final Reference ref = getRequest().getResourceRef();
 		ref.addSegment(Integer.toString(index));
-		if (getPreferredVariant().getMediaType().equals(MediaType.TEXT_HTML)) {
+		if (getPreferredVariant().getMediaType().equals(MediaType.APPLICATION_XHTML_XML)) {
 			getResponse().redirectPermanent(ref);
 		} else {
 			JSONObject result = new JSONObject();
